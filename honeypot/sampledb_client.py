@@ -95,7 +95,6 @@ class SessionRecord:
 		})
 
 	def addOutput(self, text):
-		print("HERE IS THE TEXT: " + text)
 		self.stream.append({
 			"in":   False,
 			"ts":   round((time.time() - self.date) * 1000) / 1000,
