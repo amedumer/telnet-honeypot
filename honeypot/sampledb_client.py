@@ -73,7 +73,7 @@ class SessionRecord:
 	def log_raw(self, obj):
 		if self.logfile != None:
 			with open(self.logfile, "ab") as fp:
-				fp.write(json.dumps(obj).replace("\n", "") + "\n")
+				fp.write(json.dumps(obj.encode()).replace("\n", "") + "\n")
 		
 		
 	def json(self):
@@ -124,9 +124,10 @@ class SessionRecord:
 
 		if self.log_samples:
 			for sample in self.urls:
+				fName = sample.sha256[0:8] + sample.name
 				if sample.data:
-					fp = open(self.sample_dir + "/" + sample.sha256, "wb")
-					fp.write(sample.data)
+					fp = open(self.sample_dir + "/" + fName, "wb")
+					fp.write(sample.data.encode())
 					fp.close()
 	
 		# Ignore connections without any input

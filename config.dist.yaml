@@ -29,7 +29,7 @@ backend: "http://127.0.0.1:5000"
 log_raw: null
 
 # Save samples in sample_dir
-log_samples: False
+log_samples: True
 
 # Do not download any samples, use their url as content
 #   useful for debugging
