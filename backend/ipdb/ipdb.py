@@ -5,7 +5,7 @@ import struct
 import os
 
 def ipstr2int(ip):
-	ip = unicode(ip)
+	ip = str(ip)
 	ip = ipaddress.IPv4Address(ip).packed
 	ip = struct.unpack("!I", ip)[0]
 	return ip
@@ -86,6 +86,6 @@ class IPDB:
 
 if __name__ == "__main__":
 	db = IPDB()
-	print db.find("217.81.94.77")
+	print(db.find("217.81.94.77"))
 
 

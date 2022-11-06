@@ -6,8 +6,8 @@ import traceback
 from getopt import gnu_getopt, GetoptError
 from tftpy  import TftpClient
 
-from cmd_util import easy_getopt
-from base     import Proc
+from .cmd_util import easy_getopt
+from .base     import Proc
 
 from util.config import config
 
@@ -78,7 +78,7 @@ Transfer a file from/to tftp server
 		if "-r" in opts:
 			path = opts["-r"]
 		else:
-			print Tftp.help
+			print(Tftp.help)
 			return
 			
 		if "-l" in opts:

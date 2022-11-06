@@ -10,5 +10,4 @@ dnspython
 ipaddress
 simpleeval
 pyyaml
-argon2
 eventlet

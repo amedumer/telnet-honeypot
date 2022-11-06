@@ -23,7 +23,9 @@ class Client:
 		except:
 			raise IOError("Cannot connect to backend")
 		try:
+			print(self.auth)
 			r = requests.get(self.url + "/login", auth=self.auth, timeout=20.0)
+			print(r)
 			if r.status_code != 200:
 				raise IOError()
 		except:

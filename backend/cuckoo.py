@@ -3,7 +3,7 @@ import os
 try:
     from urllib.parse import urlparse, urljoin
 except ImportError:
-    from urlparse import urlparse, urljoin
+    from urllib.parse import urlparse, urljoin
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -34,13 +34,13 @@ class Cuckoo():
         Check if file already was analyzed by cuckoo
         """
         try:
-            print("Looking for tasks for: {}".format(sha256))
+            print(("Looking for tasks for: {}".format(sha256)))
             res = requests.get(urljoin(self.url_base, "/files/view/sha256/{}".format(sha256)),
                 verify=False,
                 auth=HTTPBasicAuth(self.api_user,self.api_passwd),
                 timeout=60)
             if res and res.ok and res.status_code == 200:
-                print("Sample found in Sandbox, with ID: {}".format(res.json().get("sample", {}).get("id", 0)))
+                print(("Sample found in Sandbox, with ID: {}".format(res.json().get("sample", {}).get("id", 0))))
                 return True
             else:
                 return False
@@ -61,11 +61,11 @@ class Cuckoo():
                         ),
                         verify=False)
             if res and res.ok:
-                print("Cuckoo Request: {}, Task created with ID: {}".format(res.status_code, res.json()["task_id"]))
+                print(("Cuckoo Request: {}, Task created with ID: {}".format(res.status_code, res.json()["task_id"])))
             else:
-                print("Cuckoo Request failed: {}".format(res.status_code))
+                print(("Cuckoo Request failed: {}".format(res.status_code)))
         except Exception as e:
-            print("Cuckoo Request failed: {}".format(e))
+            print(("Cuckoo Request failed: {}".format(e)))
         return
 
 
@@ -81,9 +81,9 @@ class Cuckoo():
                         ),
                         verify=False)
             if res and res.ok:
-                print("Cuckoo Request: {}, Task created with ID: {}".format(res.status_code, res.json()["task_id"]))
+                print(("Cuckoo Request: {}, Task created with ID: {}".format(res.status_code, res.json()["task_id"])))
             else:
-                print("Cuckoo Request failed: {}".format(res.status_code))
+                print(("Cuckoo Request failed: {}".format(res.status_code)))
         except Exception as e:
-            print("Cuckoo Request failed: {}".format(e))
+            print(("Cuckoo Request failed: {}".format(e)))
         return

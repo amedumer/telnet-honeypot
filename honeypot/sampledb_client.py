@@ -1,4 +1,4 @@
-import client
+from . import client
 import time
 import traceback
 import os
@@ -24,7 +24,7 @@ def get_backend():
 
 def sha256(data):
     h = hashlib.sha256()
-    h.update(data)
+    h.update(data.encode())
     return h.hexdigest()
     
 class SampleRecord:
@@ -84,21 +84,22 @@ class SessionRecord:
 			"pass"          : self.password,
 			"date"          : self.date,
 			"stream"        : self.stream,
-			"samples"       : map(lambda sample: sample.json(), self.urls),
+			"samples"       : [sample.json() for sample in self.urls],
 		}
 
 	def addInput(self, text):
 		self.stream.append({
 			"in":   True,
 			"ts":   round((time.time() - self.date) * 1000) / 1000,
-			"data": text.decode('ascii', 'ignore')
+			"data": text
 		})
 
 	def addOutput(self, text):
+		print("HERE IS THE TEXT: " + text)
 		self.stream.append({
 			"in":   False,
 			"ts":   round((time.time() - self.date) * 1000) / 1000,
-			"data": text.decode('ascii', 'ignore')
+			"data": text
 		})
 
 	def set_login(self, ip, user, password):

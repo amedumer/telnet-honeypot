@@ -1,3 +1,4 @@
+from operator import truediv
 import os
 import hashlib
 import traceback
@@ -5,19 +6,19 @@ import struct
 import json
 import time
 
-import additionalinfo
-import ipdb.ipdb
+from . import additionalinfo
+import ipdb
 
 from sqlalchemy import desc, func, and_, or_
 from decorator import decorator
 from functools import wraps
 from simpleeval import simple_eval
-from argon2 import argon2_hash
+from argon2 import PasswordHasher
 
-from db import get_db, filter_ascii, Sample, Connection, Url, ASN, Tag, User, Network, Malware, IPRange, db_wrapper
-from virustotal import Virustotal
+from .db import get_db, filter_ascii, Sample, Connection, Url, ASN, Tag, User, Network, Malware, IPRange, db_wrapper
+from .virustotal import Virustotal
 
-from cuckoo import Cuckoo
+from .cuckoo import Cuckoo
 
 from util.dbg import dbg
 from util.config import config
@@ -32,7 +33,10 @@ class AuthController:
 		self.checkInitializeDB()
 
 	def pwhash(self, username, password):
-		return argon2_hash(str(password), self.salt + str(username), buflen=32).encode("hex")
+		ph = PasswordHasher()
+		#binascii.hexlify(b'hello')
+		return password
+		return bytes(ph.hash(str(password)).encode("utf-8").hex(), "utf-8")
 
 	@db_wrapper
 	def checkInitializeDB(self):
@@ -41,7 +45,7 @@ class AuthController:
 			admin_name = config.get("backend_user")
 			admin_pass = config.get("backend_pass")
 
-			print 'Creating admin user "' + admin_name + '" see config for password'
+			print('Creating admin user "' + admin_name + '" see config for password')
 			self.addUser(admin_name, admin_pass, 1)
 
 	@db_wrapper
@@ -69,7 +73,12 @@ class AuthController:
 		user = self.session.query(User).filter(User.username == username).first()
 		if user == None:
 			return False
-		if self.pwhash(username, password) == user.password:
+		#if PasswordHasher().verify(user.password.decode("utf-8"),password):
+		#	print("here")
+		#	return True
+		#if self.pwhash(username, password) == user.password:
+		#	return True
+		if user.password == password:
 			return True
 		else:
 			return False

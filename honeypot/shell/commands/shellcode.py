@@ -1,5 +1,5 @@
 
-from base     import Proc
+from .base     import Proc
 
 class Shellcode():
 

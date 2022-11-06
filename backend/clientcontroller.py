@@ -1,3 +1,4 @@
+import binascii
 import os
 import hashlib
 import traceback
@@ -5,22 +6,23 @@ import struct
 import json
 import time
 import socket
-import urlparse
+import urllib.parse
 import random
+import uuid
+from xmlrpc.client import DateTime
 
-import additionalinfo
-import ipdb.ipdb
+from . import additionalinfo
+import ipdb
 
 from sqlalchemy import desc, func, and_, or_
 from decorator import decorator
 from functools import wraps
 from simpleeval import simple_eval
-from argon2 import argon2_hash
 
-from db import get_db, filter_ascii, Sample, Connection, Url, ASN, Tag, User, Network, Malware, IPRange, db_wrapper
-from virustotal import Virustotal
+from .db import get_db, filter_ascii, Sample, Connection, Url, ASN, Tag, User, Network, Malware, IPRange, db_wrapper
+from .virustotal import Virustotal
 
-from cuckoo import Cuckoo
+from .cuckoo import Cuckoo
 
 from util.dbg import dbg
 from util.config import config
@@ -98,7 +100,7 @@ class ClientController:
 		if self.session.query(IPRange.ip_min).count() != 0:
 			return
 		
-		print "Filling IPRange Tables"
+		print("Filling IPRange Tables")
 		
 		asntable = ipdb.ipdb.get_asn()
 		progress = 0
@@ -108,7 +110,7 @@ class ClientController:
 			if progress % 1000 == 0:
 				self.session.commit()
 				self.session.flush()
-				print str(100.0 * float(row[0]) / 4294967296.0) + "% / " + str(100.0 * progress / 3315466) + "%" 
+				print(str(100.0 * float(row[0]) / 4294967296.0) + "% / " + str(100.0 * progress / 3315466) + "%") 
 			
 			ip = IPRange(ip_min = int(row[0]), ip_max=int(row[1]))
 			
@@ -135,7 +137,7 @@ class ClientController:
 				# Dont add session if we cannot find an asn for it
 				self.session.add(ip)
 		
-		print "IPranges loaded"
+		print("IPranges loaded")
 		
 	@db_wrapper
 	def get_ip_range_offline(self, ip):
@@ -176,7 +178,7 @@ class ClientController:
 			return self.get_ip_range_offline(ip)
 		
 	def get_url_info(self, url):
-		parsed = urlparse.urlparse(url)
+		parsed = urllib.parse.urlparse(url)
 		host   = parsed.netloc.split(':')[0]
 		
 		if host[0].isdigit():
@@ -214,12 +216,14 @@ class ClientController:
 				else:
 					network.nb_firstconns = 0
 					
-				print "Net " + str(network.id) + ": " + str(network.nb_firstconns)
+				print("Net " + str(network.id) + ": " + str(network.nb_firstconns))
 	
 	@db_wrapper
 	def put_session(self, session):
-		
-		connhash = self.calc_connhash(session["stream"]).encode("hex")
+		#print("HERE")
+		#print(self.calc_connhash(session["stream"]))
+		connhash = str(uuid.uuid4())
+		#binascii.hexlify(bytes(str(self.calc_connhash(session["stream"]))))
 		
 		backend_user = self.session.query(User).filter(
 			User.username == session["backend_username"]).first()
@@ -250,8 +254,10 @@ class ClientController:
 		urls    = []
 		for sample_json in session["samples"]:
 			# Ignore junk - may clean up the db a bit
-			if sample_json["length"] < 2000:
-				continue
+			print("HERE")
+			print(sample_json)
+			#if sample_json["length"] < 2000:
+			#	continue
 
 			sample, url = self.create_url_sample(sample_json)
 			
@@ -350,8 +356,10 @@ class ClientController:
 			min_conn = None
 			for similar in similar_conns:
 				if similar.network_id != None:
-					c1  = connhash.decode("hex")
-					c2  = similar.connhash.decode("hex")
+					#connhash.decode("hex")
+					#similar.connhash.decode("hex")
+					c1  = ""
+					c2  = ""
 					sim = self.calc_connhash_similiarity(c1, c2)
 					if sim < min_sim and similar.network.malware != None:
 						min_sim  = sim
