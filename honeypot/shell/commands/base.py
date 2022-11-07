@@ -1,7 +1,9 @@
+
 import sys
 import traceback
 
 from .binary import run_binary
+
 
 class Proc:
     procs = {}
@@ -17,6 +19,7 @@ class Proc:
         else:
             return None
 
+
 class StaticProc(Proc):
     def __init__(self, output, result=0):
         self.output = output
@@ -25,6 +28,7 @@ class StaticProc(Proc):
     def run(self, env, args):
         env.write(self.output)
         return self.result
+
 
 class FuncProc(Proc):
     def __init__(self, func):
@@ -36,18 +40,19 @@ class FuncProc(Proc):
 
 # Basic Procs
 
+
 class Exec(Proc):
 
     def run(self, env, args):
         if len(args) == 0:
             return 0
-        
+
         if args[0][0] == ">":
             name = "true"
         elif args[0].startswith("./"):
             fname = args[0][2:]
             fdata = env.readFile(fname)
-            
+
             if fdata == None:
                 env.write("sh: 1: ./" + fname + ": not found\n")
                 return 1
@@ -73,10 +78,11 @@ class Exec(Proc):
             env.write(name + ": command not found\n")
             return 1
 
+
 class BusyBox(Proc):
 
     def run(self, env, args):
-        
+
         if len(args) == 0:
             env.write("""BusyBox v1.27.2 (Ubuntu 1:1.27.2-2ubuntu3) multi-call binary.
 BusyBox is copyrighted by many authors between 1998-2015.
@@ -97,8 +103,9 @@ Currently defined functions:
             env.write(name + ": applet not found\n")
             return 1
 
+
 class Cat(Proc):
-    
+
     def run(self, env, args):
         fname = args[0]
         string = env.readFile(fname)
@@ -109,6 +116,7 @@ class Cat(Proc):
             env.write("cat: " + fname + ": No such file or directory\n")
             return 1
 
+
 class Echo(Proc):
 
     def run(self, env, args):
@@ -118,15 +126,16 @@ class Echo(Proc):
             args = args[1:]
 
         string = " ".join(args)
-        if "e" in opts:
-            string = string.decode('string_escape')
+        # if "e" in opts:
+        #    string = string.decode('string_escape')
 
         env.write(string)
 
-        if not("n" in opts):
+        if not ("n" in opts):
             env.write("\n")
 
         return 0
+
 
 class Rm(Proc):
 
@@ -135,8 +144,10 @@ class Rm(Proc):
             env.deleteFile(args[0])
             return 0
         else:
-            env.write("rm: cannot remove '" + args[0] + "': No such file or directory\n")
+            env.write("rm: cannot remove '" +
+                      args[0] + "': No such file or directory\n")
             return 1
+
 
 class Ls(Proc):
 
@@ -145,13 +156,14 @@ class Ls(Proc):
             env.write(f + "\n")
         return 0
 
+
 class Dd(Proc):
 
     def run(self, env, args):
-        infile  = None
+        infile = None
         outfile = None
-        count   = None
-        bs      = 512
+        count = None
+        bs = 512
         for a in args:
             if a.startswith("if="):
                 infile = a[3:]
@@ -161,7 +173,7 @@ class Dd(Proc):
                 count = int(a[6:])
             if a.startswith("bs="):
                 bs = int(a[3:])
-        
+
         if infile != None:
             data = env.readFile(infile)
             if count != None:
@@ -177,19 +189,22 @@ class Dd(Proc):
 0 bytes copied, 0 s, 0,0 kB/s\n""")
         return 0
 
+
 class Cp(Proc):
 
     def run(self, env, args):
-        infile  = args[0]
+        infile = args[0]
         outfile = args[1]
-        
+
         data = env.readFile(infile)
         if data != None:
             env.writeFile(outfile, data)
             return 0
         else:
-            env.write("cp: cannot stat '" + infile + "': No such file or directory\n")
+            env.write("cp: cannot stat '" + infile +
+                      "': No such file or directory\n")
             return 1
+
 
 Proc.register("cp",      Cp())
 Proc.register("ls",      Ls())
@@ -206,11 +221,11 @@ Proc.register("chmod",   StaticProc(""))
 Proc.register("uname",   StaticProc(""))
 Proc.register(":",       StaticProc(""))
 Proc.register("ps",      StaticProc(
-"""  PID TTY          TIME CMD
+    """  PID TTY          TIME CMD
  6467 pts/0    00:00:00 sh
 12013 pts/0    00:00:00 ps\n"""))
 Proc.register("enable",      StaticProc(
-""" 
+    """ 
 enable .
 enable :
 enable [
@@ -274,11 +289,7 @@ enable unset
 enable wait\n"""))
 
 # Other files
-
-from .wget  import Wget
 from .shell import Shell
-
+from .wget import Wget
 # tftp disabled
 #from tftp import Tftp
-
-
