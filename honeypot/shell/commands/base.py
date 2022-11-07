@@ -292,4 +292,4 @@ enable wait\n"""))
 from .shell import Shell
 from .wget import Wget
 # tftp disabled
-#from tftp import Tftp
+from .tftp import Tftp

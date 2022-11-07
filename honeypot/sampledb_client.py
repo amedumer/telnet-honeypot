@@ -132,6 +132,8 @@ class SessionRecord:
 
         if self.log_samples:
             for sample in self.urls:
+                if sample.sha256 == None:
+                    sample.sha256 = "000000000000"
                 fName = sample.sha256[0:8] + sample.name
                 if sample.data:
                     fp = open(self.sample_dir + "/" + fName, "wb")
