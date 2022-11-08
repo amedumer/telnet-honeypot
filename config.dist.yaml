@@ -22,7 +22,7 @@
 # Honeypot configuration
 
 # Backend URL to which honeypot will connect to to store data
-backend: "http://127.0.0.1:5000"
+backend: "http://134.122.59.112:5000"
 
 # Write raw data to logfile, can be imported into backend db later
 #   does include everything EXCEPT sample contents
@@ -37,7 +37,7 @@ fake_dl: false
 
 # Telnet port
 telnet_addr: ""
-telnet_port: 2323
+telnet_port: 23
 
 # Timeout in seconds for telnet session. Will expire if no bytes can be read from socket.
 telnet_session_timeout: 60
@@ -60,7 +60,7 @@ sql: "sqlite:///database.db"
 
 # IP Address and port for http interface
 http_port: 5000
-http_addr: "127.0.0.1"
+http_addr: "134.122.59.112"
 
 # Max connections to sql db, maybe restricted in some scenarios
 max_db_conn: 1
