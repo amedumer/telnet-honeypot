@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  honeypot:
+    depends_on:
+      - backend
+    image: ahmetomer79/telnet-iot-honeypot:latest
+    restart: always
+    entrypoint:
+      - python
+      - honeypot.py
+    ports:
+      - "2323:2323"
+    volumes:
+      - "./samples:/usr/src/app/samples"
+  backend:
+    build: .
+    image: ahmetomer79/telnet-iot-honeypot:latest
+    restart: always
+    entrypoint:
+      - python
+      - backend.py
+    ports:
+      - "7000:7000"
+    volumes:
+      - "./samples:/usr/src/app/samples"

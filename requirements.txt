@@ -2,7 +2,7 @@ setuptools
 werkzeug
 flask
 flask-httpauth
-flask-socketio
+flask-socketio<5.0.0
 sqlalchemy
 requests
 decorator
