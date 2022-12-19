@@ -1,4 +1,3 @@
 backend_user: admin
-backend_pass: 9f314ecb0f62dec547a2450df267f6b0
-backend_salt: b623e265f5e1c98bd9ddee28bb07a35b
-
+backend_pass: 96c3703ae21e27991bf1864400586992
+backend_salt: 709a72fc0b64865cce2b59d8411cb256
