@@ -63,7 +63,7 @@ http_port: 5000
 http_addr: "134.122.59.112"
 
 # Max connections to sql db, maybe restricted in some scenarios
-max_db_conn: 1
+max_db_conn: 20
 
 # Directory in which samples are stored
 sample_dir: "samples"

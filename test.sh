@@ -12,9 +12,6 @@ git clone https://github.com/amedumer/telnet-honeypot.git
 # Navigate to the repository directory
 cd telnet-honeypot
 
-# Install the dependencies
-pip3 install -r requirements.txt
-
 echo "starting honeypots"
 python3 honeypot.py -p 23 &
 python3 honeypot.py -p 2323 &
