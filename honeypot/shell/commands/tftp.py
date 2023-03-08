@@ -17,7 +17,7 @@ class DummyIO(io.RawIOBase):
 		self.data = ""
 		
 	def write(self, s):
-		self.data += s
+		self.data += s.decode("Latin-1")
 		
 class StaticTftp(Proc):
 
@@ -85,20 +85,21 @@ Transfer a file from/to tftp server
 			fname = opts["-l"]
 		else:
 			fname = path
-		
+
 		try:
 			data = self.download(host, port, path)
 			env.writeFile(fname, data)
 
 			env.action("download", {
-				"url":  "tftp://" + host + ":" + str(port) + "/" + path,
-				"path": fname,
-				"info": None,
-				"data": data
+					"url":  "tftp://" + host + ":" + str(port) + "/" + path,
+					"path": fname,
+					"info": None,
+					"data": data
 			})
-			
-			self.env.write("\nFinished. Saved to " + fname + ".\n")
-		except:
+				
+			self.env.write("\nFinished. Saved to " + fname + ".\n")			
+		except Exception as e:
+			print(e)
 			env.write("tftp: timeout\n")
 			env.action("download", {
 				"url":  "tftp://" + host + ":" + str(port) + "/" + path,
@@ -115,7 +116,7 @@ Transfer a file from/to tftp server
 		client = TftpClient(host, port)
 		
 		self.env.write("Trying " + host + ":" + str(port) + " ... ")
-		client.download(fname, output, timeout=5, packethook=self.pkt)
+		client.download(fname, output)
 		return output.data
 		
 	def pkt(self, data):

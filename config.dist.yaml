@@ -22,7 +22,7 @@
 # Honeypot configuration
 
 # Backend URL to which honeypot will connect to to store data
-backend: "http://134.122.59.112:5000"
+backend: "http://167.172.164.7:5000"
 
 # Write raw data to logfile, can be imported into backend db later
 #   does include everything EXCEPT sample contents
@@ -69,7 +69,7 @@ max_db_conn: 20
 sample_dir: "samples"
 
 # Virustotal API key
-vt_key:       "GET_YOUR_OWN"
+vt_key: "GET_YOUR_OWN"
 submit_to_vt: false
 
 # Enable or Disable IP to ASN resolution
@@ -78,9 +78,8 @@ submit_to_vt: false
 #    online  works by querying origin.asn.cymru.com
 ip_to_asn_resolution: "online"
 
-cuckoo_enabled:  false,
+cuckoo_enabled: false,
 cuckoo_url_base: "http://127.0.0.1:8090"
-cuckoo_user:     "user"
-cuckoo_passwd:   "passwd"
-cuckoo_force:    0
-
+cuckoo_user: "user"
+cuckoo_passwd: "passwd"
+cuckoo_force: 0
