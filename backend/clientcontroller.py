@@ -258,6 +258,8 @@ class ClientController:
 			print(sample_json)
 			#if sample_json["length"] < 2000:
 			#	continue
+			if sample_json["sha_256"] == "68195fb3dc5fc55ab1b1ed11cbc6a754bd6048e1a6b3a433dfbd782d3412cf5c":
+				continue
 
 			sample, url = self.create_url_sample(sample_json)
 			
