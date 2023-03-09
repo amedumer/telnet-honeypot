@@ -371,12 +371,14 @@ eng = None
 if is_sqlite:
     eng = sqlalchemy.create_engine(config.get("sql"),
                                    poolclass=QueuePool,
-                                   pool_size=20,
-                                   max_overflow=0,
+                                   pool_size=50,
+                                   max_overflow=10,
                                    connect_args={'check_same_thread': False})
 else:
     eng = sqlalchemy.create_engine(config.get("sql"),
                                    poolclass=QueuePool,
+                                   pool_size=50,
+                                   max_overflow=10,
                                    pool_size=config.get("max_db_conn"),
                                    max_overflow=config.get("max_db_conn"))
 
