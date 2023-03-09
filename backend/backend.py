@@ -18,6 +18,9 @@ import base64
 import time
 import signal
 
+from waitress import serve
+
+
 app  = Flask(__name__)
 
 ctrl     = ClientController()
@@ -222,9 +225,8 @@ def get_newest_samples():
 @app.route("/url/<ref_enc>", methods = ["GET"])
 def get_url(ref_enc):
 	ref = base64.b64decode(ref_enc)
-	print(("\"" + ref_enc + "\" decodes to \"" + ref + "\""))
 	
-	url = web.get_url(ref)
+	url = web.get_url(ref.decode('UTF-8'))
 	if url:
 		return json.dumps(url)
 	else:
@@ -271,7 +273,8 @@ def get_connections_fast():
 @app.route("/connection/statistics/per_country")
 def get_country_stats():
 	stats = web.get_country_stats()
-	return json.dumps(stats)
+	results = [tuple(row) for row in stats]
+	return json.dumps(results)
 
 @app.route("/connection/by_country/<country>")
 def get_country_connections(country):
@@ -332,8 +335,9 @@ def foo():
 
 def run():
 	signal.signal(15, stop)
+	serve(app, host="0.0.0.0", port=3030,threads=2)
 
-	app.run(host=config.get("http_addr"), port=config.get("http_port"),threaded=True)
+	#app.run(host=config.get("http_addr"), port=config.get("http_port"),threaded=True)
 	#socketio.run(app, host=config.get("http_addr"), port=config.get("http_port"))
 
 def stop():

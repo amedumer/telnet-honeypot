@@ -74,7 +74,6 @@ if len(sys.argv) > 1:
 	sys.exit(0)
 
 from backend.backend import run,foo
-def start():
-	return foo()
+
 run()
 
