@@ -75,6 +75,6 @@ if len(sys.argv) > 1:
 
 from backend.backend import run,foo
 def start():
-	foo()
+	return foo()
 run()
 
