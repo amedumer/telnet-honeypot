@@ -73,8 +73,8 @@ if len(sys.argv) > 1:
 	print("To simply start the backend, use no command at all")
 	sys.exit(0)
 
-from backend.backend import run
+from backend.backend import run,foo
 def start():
-	run()
+	foo()
 run()
 

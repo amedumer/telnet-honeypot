@@ -327,6 +327,9 @@ def get_asn(asn):
 	
 	return json.dumps(info)
 
+def foo():
+	return app
+
 def run():
 	signal.signal(15, stop)
 
