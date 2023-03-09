@@ -379,8 +379,7 @@ else:
                                    poolclass=QueuePool,
                                    pool_size=50,
                                    max_overflow=10,
-                                   pool_size=config.get("max_db_conn"),
-                                   max_overflow=config.get("max_db_conn"))
+                                   )
 
 Base.metadata.create_all(eng)
 
