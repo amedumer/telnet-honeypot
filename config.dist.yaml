@@ -24,7 +24,7 @@
 debug: true
 
 # Backend URL to which honeypot will connect to to store data
-backend: "http://64.225.96.62:5000"
+backend: "http://255.255.255.255:9999"
 
 # Write raw data to logfile, can be imported into backend db later
 #   does include everything EXCEPT sample contents
