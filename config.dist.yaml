@@ -20,9 +20,11 @@
 
 ##############################################
 # Honeypot configuration
+# DEBUG option, serves in prod if false.
+debug: true
 
 # Backend URL to which honeypot will connect to to store data
-backend: "http://167.172.164.7:5000"
+backend: "http://64.225.96.62:5000"
 
 # Write raw data to logfile, can be imported into backend db later
 #   does include everything EXCEPT sample contents
@@ -60,7 +62,7 @@ sql: "sqlite:///database.db"
 
 # IP Address and port for http interface
 http_port: 5000
-http_addr: "134.122.59.112"
+http_addr: "0.0.0.0"
 
 # Max connections to sql db, maybe restricted in some scenarios
 max_db_conn: 20

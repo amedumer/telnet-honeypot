@@ -335,10 +335,11 @@ def foo():
 
 def run():
 	signal.signal(15, stop)
-	serve(app, host="0.0.0.0", port=5000,threads=1)
 
-	#app.run(host=config.get("http_addr"), port=config.get("http_port"),threaded=True)
-	#socketio.run(app, host=config.get("http_addr"), port=config.get("http_port"))
+	if config.get("debug"):
+		app.run(host=config.get("http_addr"), port=config.get("http_port"),threaded=False)
+	else:
+		serve(app, host=config.get("http_addr"), port=config.get("http_port"),threads=1)
 
 def stop():
 	print("asdasdasd")

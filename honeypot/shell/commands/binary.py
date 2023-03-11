@@ -17,7 +17,12 @@ def run_binary(data, fname, args, env):
         if pos == -1: break
         
         sockaddr = data[pos:pos+8]
-        sockaddr = struct.unpack(">HHBBBB", sockaddr)
+        try:
+            sockaddr = struct.unpack(">HHBBBB", sockaddr.encode())
+        except Exception as e:
+            print(e)
+            break
+
         pos += 8
         
         # Ignore ip addresses starting with 0 or > 224 (multicast)
@@ -27,7 +32,6 @@ def run_binary(data, fname, args, env):
         ip   = str(sockaddr[2]) + "." + str(sockaddr[3]) + "." + str(sockaddr[4]) + "." + str(sockaddr[5])
         port = sockaddr[1]
         tuples.append((ip, port))
-
     for addr in tuples:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

@@ -11,3 +11,6 @@ ipaddress
 simpleeval
 pyyaml
 eventlet
+argon2_cffi
+cffi
+setuptools
